@@ -59,14 +59,14 @@ export default function FacialAnalysis() {
         )}
 
         {/* Upload using Camera */}
-        <UploadCard
+        {/* <UploadCard
           icon="📷"
           title="Upload using Camera"
           subtitle="Take a live photo"
           button="Open Camera"
           onFileSelect={handleFileSelect}
           capture="user"
-        />
+        /> */}
       </div>
 
       {/* Status + Products */}
