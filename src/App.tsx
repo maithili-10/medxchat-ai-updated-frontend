@@ -9,7 +9,7 @@ const menuItems = [
   { key: "ai-chat", label: "AI Chat" },
   { key: "health-dashboard", label: "Health Dashboard" },
   { key: "facial-analysis", label: "Facial Analysis" },
-  { key: "profile", label: "Profile" },
+  // { key: "profile", label: "Profile" },
 ];
 
 export default function App() {

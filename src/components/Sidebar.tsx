@@ -9,7 +9,11 @@ interface SidebarProps {
 export default function Sidebar({ menuItems, activeMenu, setActiveMenu }: SidebarProps) {
   return (
     <div className="sidebar">
-      <h1 className="logo">VitalAI</h1>
+      {/* Replace text logo with image */}
+      <div className="logo">
+        <img src="/medx-logo.png" alt="MedxAI Logo" style={{ width: '150px', height: 'auto' }} />
+      </div>
+
       <nav>
         {menuItems.map((item) => (
           <button

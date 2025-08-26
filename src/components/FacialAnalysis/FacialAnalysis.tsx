@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import UploadCard from "./UploadCard.tsx";
+import "./FacialAnalysis.css"; 
 import ProductGrid from "./ProductGrid.tsx";
+
 
 export default function FacialAnalysis() {
   const [products, setProducts] = useState<any[]>([]);
@@ -16,9 +18,11 @@ export default function FacialAnalysis() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:3000/facial-analysis/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await axios.post(
+        "http://localhost:3000/facial-analysis/upload",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
       setProducts(res.data.products || []);
     } catch (err) {
       console.error("Facial Analysis Error:", err);
@@ -29,11 +33,15 @@ export default function FacialAnalysis() {
   };
 
   return (
-    <div>
+    <div className="facial-analysis">
       <h2 className="heading">Facial Wellness Analysis</h2>
-      <p>Upload a photo for AI-powered wellness insights and recommendations.</p>
+      <p className="subtext">
+        Upload a photo for AI-powered wellness insights and recommendations.
+      </p>
 
-      <div className="upload-preview-section">
+      {/* Upload Row */}
+      <div className="upload-row">
+        {/* Upload from Device */}
         <UploadCard
           icon="⬆️"
           title="Upload from Device"
@@ -41,15 +49,36 @@ export default function FacialAnalysis() {
           button="Select Photo"
           onFileSelect={handleFileSelect}
         />
+
+        {/* Conditionally show Preview */}
         {uploadedImage && (
-          <div className="uploaded-photo-preview">
-            <img src={uploadedImage} alt="Uploaded" className="uploaded-image" />
+          <div className="preview-card">
+            <h3 className="card-title">Preview</h3>
+            <img src={uploadedImage} alt="Uploaded" className="preview-img" />
           </div>
         )}
+
+        {/* Upload using Camera */}
+        <UploadCard
+          icon="📷"
+          title="Upload using Camera"
+          subtitle="Take a live photo"
+          button="Open Camera"
+          onFileSelect={handleFileSelect}
+          capture="user"
+        />
       </div>
 
-      {loading && <p>Analyzing image...</p>}
+      {/* Status + Products */}
+      {loading && <p className="loading">Analyzing image...</p>}
+      {products.length > 0 && (
+        <div className="product-section">
+       
+         {loading && <p>Analyzing image...</p>}
       {products.length > 0 && <ProductGrid products={products} />}
+
+        </div>
+      )}
     </div>
   );
 }
