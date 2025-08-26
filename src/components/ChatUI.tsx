@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./ChatUI.css"; // import css file
 
 export default function ChatUI() {
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>([
@@ -9,24 +10,31 @@ export default function ChatUI() {
   const [threadId, setThreadId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // --- Format AI response ---
   const formatAssistantContent = (content: string) => {
-    const lines = content.split("\n");
-    return lines.map((line, i) => {
-      const parts = line.split(/(https?:\/\/[^\s]+)/g);
+    const lines = content.split("\n").filter((line) => line.trim() !== "");
+
+    // Detect product-style responses
+    if (lines.some((line) => line.includes("→ http"))) {
       return (
-        <p key={i} style={{ margin: "4px 0" }}>
-          {parts.map((part, j) =>
-            part.match(/https?:\/\/[^\s]+/) ? (
-              <a key={j} href={part} target="_blank" rel="noopener noreferrer" style={{ color: "#1a73e8" }}>
-                {part}
-              </a>
-            ) : (
-              part
-            )
-          )}
-        </p>
+        <div className="product-list">
+          {lines.map((line, i) => {
+            const [title, url] = line.split("→").map((s) => s.trim());
+            return (
+              <div key={i} className="product-item">
+                <p className="product-title">{title}</p>
+                <a href={url} target="_blank" rel="noopener noreferrer" className="product-link">
+                  View Product
+                </a>
+              </div>
+            );
+          })}
+        </div>
       );
-    });
+    }
+
+    // fallback plain text
+    return <p>{content}</p>;
   };
 
   const sendMessage = async () => {
@@ -67,7 +75,9 @@ export default function ChatUI() {
       <div className="chat-box">
         {messages.map((msg, i) => (
           <div key={i} className={`chat-message ${msg.sender}`}>
-            <div className="bubble">{msg.sender === "ai" ? formatAssistantContent(msg.text) : msg.text}</div>
+            <div className="bubble">
+              {msg.sender === "ai" ? formatAssistantContent(msg.text) : msg.text}
+            </div>
           </div>
         ))}
         {loading && (
