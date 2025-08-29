@@ -19,7 +19,7 @@ export default function FacialAnalysis() {
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/facial-analysis/upload",
+        "https://medpharmacy-ai-2.onrender.com/facial-analysis/upload",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

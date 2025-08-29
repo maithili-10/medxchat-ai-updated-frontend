@@ -1,28 +1,36 @@
 import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import "./Sidebar.css"; 
 
 interface SidebarProps {
-  menuItems: { key: string; label: string }[];
-  activeMenu: string;
-  setActiveMenu: (key: string) => void;
+  menuItems: { key: string; label: string; path: string }[];
 }
 
-export default function Sidebar({ menuItems, activeMenu, setActiveMenu }: SidebarProps) {
+export default function Sidebar({ menuItems }: SidebarProps) {
+  const location = useLocation();
+
   return (
     <div className="sidebar">
-      {/* Replace text logo with image */}
+      {/* Logo */}
       <div className="logo">
-        <img src="/medx-logo.png" alt="MedxAI Logo" style={{ width: '150px', height: 'auto' }} />
+        <img
+          src="/medx-logo.png"
+          alt="MedxAI Logo"
+          style={{ width: "150px", height: "auto" }}
+        />
       </div>
 
       <nav>
         {menuItems.map((item) => (
-          <button
-            key={item.key}
-            onClick={() => setActiveMenu(item.key)}
-            className={`menu-btn ${activeMenu === item.key ? "active" : ""}`}
-          >
-            {item.label}
-          </button>
+          <Link key={item.key} to={item.path}>
+            <button
+              className={`menu-btn ${
+                location.pathname === item.path ? "active" : ""
+              }`}
+            >
+              {item.label}
+            </button>
+          </Link>
         ))}
       </nav>
     </div>
